@@ -30,6 +30,8 @@ class Vector2D
     Vector2D operator/(const T& rhs) const;
     Vector2D operator*(const T& rhs) const;
 
+    const bool operator==(const Vector2D& rhs) const;
+
     void Swap(Vector2D& rhs);
 
     const float Norm(const float& l) const;

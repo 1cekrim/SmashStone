@@ -53,6 +53,12 @@ Vector2D<T>& Vector2D<T>::operator*=(const T& rhs)
 }
 
 template<class T>
+const bool Vector2D<T>::operator==(const Vector2D<T>& rhs) const
+{
+    return (this->x_ == rhs.x_) && (this->y_ == rhs.y_);
+}
+
+template<class T>
 Vector2D<T> Vector2D<T>::operator+(const Vector2D<T>& rhs) const
 {
     return Vector2D<T>(this->x_ + rhs.x_, this->y_ + rhs.y_);

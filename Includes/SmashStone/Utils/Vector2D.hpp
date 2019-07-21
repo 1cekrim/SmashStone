@@ -2,6 +2,7 @@
 #define SMASHSTONE_UTILS_VECTOR2D_HPP
 
 #include <ostream>
+#include <cmath>
 
 namespace SmashStone::Utils
 {
@@ -12,7 +13,8 @@ class Vector2D
     friend std::ostream& operator<<(std::ostream& stream, const Vector2D<U>& vec2d);
     template<class U>
     friend Vector2D<U> operator*(const U& lhs, const Vector2D<U>& rhs);
-public:
+
+ public:
     T x_, y_;
 
     Vector2D() = delete;
@@ -28,8 +30,6 @@ public:
     Vector2D operator/(const T& rhs) const;
     Vector2D operator*(const T& rhs) const;
 
-    ~Vector2D();
-
     void Swap(Vector2D& rhs);
 
     const float Norm(const float& l) const;
@@ -39,4 +39,6 @@ public:
     Vector2D Normalized(void) const;
 };
 }  // namespace SmashStone::Utils
+
+#include <SmashStone/Utils/Vector2D-impl.hpp>
 #endif  // SMASHSTONE_UTILS_VECTOR2D_HPP

@@ -1,6 +1,5 @@
-#include <SmashStone/Utils/Vector2D.hpp>
-
-#include <cmath>
+#ifndef SMASHSTONE_UTILS_VECTOR2D_IMPL_HPP
+#define SMASHSTONE_UTILS_VECTOR2D_IMPL_HPP
 
 namespace SmashStone::Utils
 {
@@ -101,8 +100,8 @@ template<class T>
 Vector2D<T> Vector2D<T>::operator*(const T& rhs) const
 {
     Vector2D<T> temp = *this;
-    temp._x *= rhs;
-    temp._y *= rhs;
+    temp.x_ *= rhs;
+    temp.y_ *= rhs;
     return temp;
 }
 
@@ -125,3 +124,4 @@ Vector2D<T> Vector2D<T>::Normalized(void) const
     return Vector2D<T>(this->x_ / d, this->y_ / d);
 }
 }  // namespace SmashStone::Utils
+#endif  // SMASHSTONE_UTILS_VECTOR2D_IMPL_HPP

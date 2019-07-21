@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR)
 
 # C++ standard
-set(CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
 # Delcare project
 project(SmashStone)
@@ -20,7 +20,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(Libraries/googletest)
 
 # Includes
-include_directories(Include)
+include_directories(Includes)
 
 # Project modules
 add_subdirectory(Source/SmashStone)

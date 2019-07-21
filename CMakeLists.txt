@@ -20,7 +20,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(Libraries/googletest)
 
 # Includes
-include_directories(Includes)
+include_directories(Include)
 
 # Project modules
 add_subdirectory(Source/SmashStone)

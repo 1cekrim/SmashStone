@@ -55,8 +55,16 @@ void Physics::UpdatePosition(const float& dt)
     }
 }
 
-const int Physics::AddStone(Models::Stone& stone)
+Models::Stone& Physics::AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity)
 {
+    Models::Stone tstone(color, mass, radius, std::move(position), std::move(velocity));
+
+    allStones.push_back(std::move(tstone));
+
+    const int id = allStones.size() - 1;
+    Models::Stone& stone = allStones.at(id);
+    stone.id = id;
+
     std::vector<Models::Stone>& blackStones = stones.at(StoneColor::BLACK);
     std::vector<Models::Stone>& whiteStones = stones.at(StoneColor::WHITE);
     std::vector<Models::Stone>& sameColorStones = stones.at(stone.color);
@@ -71,9 +79,10 @@ const int Physics::AddStone(Models::Stone& stone)
         manifolds.emplace_back(stone, ws);
     }
 
-    sameColorStones.emplace_back(stone);
+    sameColorStones.push_back(stone);
+    
     //CheckCrash();
-    return sameColorStones.size() - 1;
+    return stone;
 }
 
 void Physics::CheckCrash(void)

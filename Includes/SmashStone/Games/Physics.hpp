@@ -12,12 +12,12 @@ namespace SmashStone::Games
 {
 struct Manifold
 {
-    Models::Stone* source;
-    Models::Stone* target;
+    Models::Stone& source;
+    Models::Stone& target;
     float penetration;
     Utils::Vector2D<float> normal;
 
-    Manifold(Models::Stone& source, Models::Stone& target) : source(&source), target(&target), penetration(0.0f), normal(0.0f, 0.0f)
+    Manifold(Models::Stone& source, Models::Stone& target) : source(source), target(target), penetration(0.0f), normal(0.0f, 0.0f)
     {
         // Do nothing
     }
@@ -38,11 +38,12 @@ public:
     void DoCrash(Manifold& manifold) const;
 
     void DeleteStone(const int& id);
-    const int AddStone(Models::Stone& stone);
+    Models::Stone& AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
 
     float friction, elasticity;
     std::vector<Manifold> manifolds;
     std::map<StoneColor, std::vector<Models::Stone>> stones;
+    std::vector<Models::Stone> allStones;
 };
 }  // namespace SmashStone::Games
 #endif  // SMASHSTONE_GAMES_PHYSICS_HPP

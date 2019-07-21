@@ -8,11 +8,9 @@ namespace SmashStone::Models
 {
 class Stone
 {
+public:
     Stone() = delete;
-    Stone(StoneColor& color, float& mass, float& radius, Utils::Vector2D<float>& position, Utils::Vector2D<float>& velocity);
-
-    void AddForce(Utils::Vector2D<float>& force) const;
-
+    Stone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
     StoneColor color;
     int id;
     float mass, radius, invMass;

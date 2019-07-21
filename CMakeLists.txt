@@ -23,5 +23,5 @@ add_subdirectory(Libraries/googletest)
 include_directories(Includes)
 
 # Project modules
-add_subdirectory(Sources/SmashStone)
+add_subdirectory(Source/SmashStone)
 add_subdirectory(UnitTest)

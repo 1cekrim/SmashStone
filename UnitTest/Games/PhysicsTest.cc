@@ -12,7 +12,7 @@ using namespace Utils;
 
 TEST(PhysicsTest, UpdatePosition)
 {
-    Physics physics(0.0f, 0.0f);
+    Physics physics(0.0f, 0.0f, 0.01f);
 
     physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(1.0f, 2.0f));
@@ -49,7 +49,7 @@ TEST(PhysicsTest, UpdatePosition)
 
 TEST(PhysicsTest, AffectFriction)
 {
-    Physics physics(1.0f, 0.0f);
+    Physics physics(1.0f, 0.0f, 0.01f);
 
     physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(1.0f, 0.0f));
@@ -67,7 +67,7 @@ TEST(PhysicsTest, AffectFriction)
 
 TEST(PhysicTest, CheckCrash)
 {
-    Physics physics(0.0f, 0.0f);
+    Physics physics(0.0f, 0.0f, 0.01f);
 
     physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(0.0f, 0.0f));

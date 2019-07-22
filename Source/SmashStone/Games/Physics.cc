@@ -55,19 +55,15 @@ void Physics::UpdatePosition(const float& dt)
     }
 }
 
-Models::Stone& Physics::AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity)
+const int Physics::AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity)
 {
-    Models::Stone tstone(color, mass, radius, std::move(position), std::move(velocity));
-
-    allStones.push_back(std::move(tstone));
-
-    const int id = allStones.size() - 1;
-    Models::Stone& stone = allStones.at(id);
-    stone.id = id;
-
     std::vector<Models::Stone>& blackStones = stones.at(StoneColor::BLACK);
     std::vector<Models::Stone>& whiteStones = stones.at(StoneColor::WHITE);
-    std::vector<Models::Stone>& sameColorStones = stones.at(stone.color);
+
+    std::vector<Models::Stone>& sameColorStones = stones.at(color);
+    sameColorStones.emplace_back(color, mass, radius, position, velocity);
+
+    Models::Stone& stone = sameColorStones.back();
 
     for (Models::Stone& bs : blackStones)
     {
@@ -78,11 +74,7 @@ Models::Stone& Physics::AddStone(StoneColor color, float mass, float radius, Uti
     {
         manifolds.emplace_back(stone, ws);
     }
-
-    sameColorStones.push_back(stone);
-    
-    //CheckCrash();
-    return stone;
+    return sameColorStones.size() - 1;
 }
 
 void Physics::CheckCrash(void)
@@ -98,13 +90,13 @@ void Physics::CheckCrash(void)
 
 const bool Physics::UpdateManifold(Manifold& manifold) const
 {
-    Models::Stone* source = manifold.source;
-    Models::Stone* target = manifold.target;
+    Models::Stone& source = manifold.source;
+    Models::Stone& target = manifold.target;
 
-    Utils::Vector2D<float> dir = target->position - source->position;
+    Utils::Vector2D<float> dir = target.position - source.position;
 
     const float d = dir.Norm(2);
-    const float r = source->radius + target->radius;
+    const float r = source.radius + target.radius;
 
     if (r < d)
     {
@@ -120,7 +112,7 @@ const bool Physics::UpdateManifold(Manifold& manifold) const
     }
     else
     {
-        manifold.penetration = source->radius;
+        manifold.penetration = source.radius;
         manifold.normal = Utils::Vector2D<float>(1.0f, 0.0f);
         return true;
     }
@@ -128,7 +120,7 @@ const bool Physics::UpdateManifold(Manifold& manifold) const
 
 void Physics::DoCrash(Manifold& manifold) const
 {
-    Utils::Vector2D<float> rv = manifold.target->position - manifold.source->position;
+    Utils::Vector2D<float> rv = manifold.target.velocity - manifold.source.velocity;
 
     const float vn = rv.Dot(manifold.normal);
     if (vn > 0)
@@ -136,11 +128,11 @@ void Physics::DoCrash(Manifold& manifold) const
         return;
     }
 
-    const float j = -1 * (1 + elasticity) * vn / (manifold.source->invMass + manifold.target->invMass);
+    const float j = -1 * (1 + elasticity) * vn / (manifold.source.invMass + manifold.target.invMass);
 
     const Utils::Vector2D<float> impulse = j * manifold.normal;
 
-    manifold.source->velocity -= manifold.source->invMass * impulse;
-    manifold.target->velocity -= manifold.target->invMass * impulse;
+    manifold.source.velocity -= manifold.source.invMass * impulse;
+    manifold.target.velocity += manifold.target.invMass * impulse;
 }
 }

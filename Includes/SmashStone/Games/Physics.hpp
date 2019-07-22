@@ -38,12 +38,11 @@ public:
     void DoCrash(Manifold& manifold) const;
 
     void DeleteStone(const int& id);
-    Models::Stone& AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
+    const int AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
 
     float friction, elasticity;
     std::vector<Manifold> manifolds;
     std::map<StoneColor, std::vector<Models::Stone>> stones;
-    std::vector<Models::Stone> allStones;
 };
 }  // namespace SmashStone::Games
 #endif  // SMASHSTONE_GAMES_PHYSICS_HPP

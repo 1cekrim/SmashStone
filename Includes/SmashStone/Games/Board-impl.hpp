@@ -49,8 +49,8 @@ bool Board::CanPutHere(Utils::Vector2D<float> pos)
 
     for (auto& stone : physics.get()->stones.at(StoneColor::BLACK))
     {
-        const float r = stone.radius * 2;
-        const float d = (pos - stone.position).Norm(2);
+        const float r = stone->radius * 2;
+        const float d = (pos - stone->position).Norm(2);
 
         if (d < r)
         {
@@ -60,8 +60,8 @@ bool Board::CanPutHere(Utils::Vector2D<float> pos)
 
     for (auto& stone : physics.get()->stones.at(StoneColor::WHITE))
     {
-        const float r = stone.radius * 2;
-        const float d = (pos - stone.position).Norm(2);
+        const float r = stone->radius * 2;
+        const float d = (pos - stone->position).Norm(2);
 
         if (d < r)
         {
@@ -134,14 +134,14 @@ void Board::PlayerDoAction(const int playerNumber)
     case 1:
     {
         auto action = player1.get()->GetAction();
-        physics.get()->stones.at(StoneColor::BLACK).at(action.SelectedStoneIdx).velocity = action.velocity;
+        physics.get()->stones.at(StoneColor::BLACK).at(action.SelectedStoneIdx)->velocity = action.velocity;
         std::cout << "player1 action: " << action.SelectedStoneIdx << " change speed " << action.velocity << std::endl;
         break;
     }
     case 2:
     {
         auto action = player2.get()->GetAction();
-        physics.get()->stones.at(StoneColor::WHITE).at(action.SelectedStoneIdx).velocity = action.velocity;
+        physics.get()->stones.at(StoneColor::WHITE).at(action.SelectedStoneIdx)->velocity = action.velocity;
         std::cout << "player2 action: " << action.SelectedStoneIdx << " change speed " << action.velocity << std::endl;
         break;
     }
@@ -158,18 +158,18 @@ bool Board::ProcessPhysics(const float dt)
 
 void Board::DestroyOutBoundStone(void)
 {
-    std::vector<Models::Stone>& blackStones = physics.get()->stones.at(StoneColor::BLACK);
-    std::vector<Models::Stone>& whiteStones = physics.get()->stones.at(StoneColor::WHITE);
+    auto& blackStones = physics.get()->stones.at(StoneColor::BLACK);
+    auto& whiteStones = physics.get()->stones.at(StoneColor::WHITE);
 
     for (auto stone = blackStones.begin(); stone != blackStones.end();)
     {
-        const float x = stone->position.x_;
-        const float y = stone->position.y_;
+        const float x = (*stone)->position.x_;
+        const float y = (*stone)->position.y_;
 
         if (x < 0 || y < 0 || x > width || y > height)
         {
             stone = blackStones.erase(stone);
-            stone->isDestroyed = true;
+            (*stone)->isDestroyed = true;
         }
         else
         {
@@ -179,13 +179,13 @@ void Board::DestroyOutBoundStone(void)
 
     for (auto stone = whiteStones.begin(); stone != whiteStones.end();)
     {
-        const float x = stone->position.x_;
-        const float y = stone->position.y_;
+        const float x = (*stone)->position.x_;
+        const float y = (*stone)->position.y_;
         
         if (x < 0 || y < 0 || x > width || y > height)
         {
             stone = whiteStones.erase(stone);
-            stone->isDestroyed = true;
+            (*stone)->isDestroyed = true;
         }
         else
         {
@@ -234,9 +234,9 @@ std::vector<Utils::Vector2D<float>> Board::GetStones(StoneColor color) const
     std::vector<Utils::Vector2D<float>> stones;
     stones.reserve(physics.get()->stones.at(color).size());
 
-    for (Models::Stone& stone : physics.get()->stones.at(color))
+    for (auto& stone : physics.get()->stones.at(color))
     {
-        stones.push_back(stone.position);
+        stones.push_back(stone->position);
     }
 
     return stones;

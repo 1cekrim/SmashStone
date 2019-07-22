@@ -12,22 +12,17 @@ using namespace Utils;
 
 TEST(PhysicsTest, UpdatePosition)
 {
-    Physics physics(0.0f, 0.0f, 0.01f);
+    Physics physics(0.0f, 0.0f, 0.01f, 100);
 
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
+    Stone& black1 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(1.0f, 2.0f));
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 2.0f),
-                     Vector2D(1.0f, 2.0f));
-
-    physics.AddStone(StoneColor::WHITE, 1.0f, 1.0f, Vector2D(5.0f, 5.0f),
-                     Vector2D(1.0f, 2.0f));
-    physics.AddStone(StoneColor::WHITE, 1.0f, 1.0f, Vector2D(10.0f, 5.0f),
+    Stone& black2 =physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 2.0f),
                      Vector2D(1.0f, 2.0f));
 
-    Stone& black1 = physics.stones.at(StoneColor::BLACK).at(0);
-    Stone& black2 = physics.stones.at(StoneColor::BLACK).at(1);
-    Stone& white1 = physics.stones.at(StoneColor::WHITE).at(0);
-    Stone& white2 = physics.stones.at(StoneColor::WHITE).at(1);
+    Stone& white1 =physics.AddStone(StoneColor::WHITE, 1.0f, 1.0f, Vector2D(5.0f, 5.0f),
+                     Vector2D(1.0f, 2.0f));
+    Stone& white2 =physics.AddStone(StoneColor::WHITE, 1.0f, 1.0f, Vector2D(10.0f, 5.0f),
+                     Vector2D(1.0f, 2.0f));
 
     physics.UpdatePosition(1);
 
@@ -49,12 +44,10 @@ TEST(PhysicsTest, UpdatePosition)
 
 TEST(PhysicsTest, AffectFriction)
 {
-    Physics physics(1.0f, 0.0f, 0.01f);
+    Physics physics(1.0f, 0.0f, 0.01f, 100);
 
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
+    Stone& black1 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(1.0f, 0.0f));
-
-    Stone& black1 = physics.stones.at(StoneColor::BLACK).at(0);
 
     for (int i = 0; i < 100; i++)
     {
@@ -67,15 +60,12 @@ TEST(PhysicsTest, AffectFriction)
 
 TEST(PhysicTest, CheckCrash)
 {
-    Physics physics(0.0f, 0.0f, 0.01f);
+    Physics physics(0.0f, 0.0f, 0.01f, 100);
 
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
+    Stone& black1 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(0.0f, 0.0f));
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(1.0f, 2.2f),
+    Stone& black2 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(1.0f, 2.2f),
                      Vector2D(0.0f, -1.0f));
-
-	Stone& black1 = physics.stones.at(StoneColor::BLACK).at(0);
-    Stone& black2 = physics.stones.at(StoneColor::BLACK).at(1);
 
 	for (int i = 0; i < 100; i++)
     {
@@ -90,15 +80,12 @@ TEST(PhysicTest, CheckCrash)
 
 TEST(PhysicTest, Update)
 {
-    Physics physics(0.0f, 0.0f, 0.01f);
+    Physics physics(0.0f, 0.0f, 0.01f, 100);
 
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
+    Stone& black1 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
                      Vector2D(0.0f, 0.0f));
-    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(1.0f, 2.2f),
+    Stone& black2 = physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(1.0f, 2.2f),
                      Vector2D(0.0f, -1.0f));
-
-	Stone& black1 = physics.stones.at(StoneColor::BLACK).at(0);
-    Stone& black2 = physics.stones.at(StoneColor::BLACK).at(1);
 
 	for (int i = 0; i < 100; i++)
     {

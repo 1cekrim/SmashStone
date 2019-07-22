@@ -78,7 +78,7 @@ void Board::SetPlayer(const int playerNumber)
     switch (playerNumber)
     {
         case 1:
-            player1 = std::unique_ptr<IPlayer>(new T());
+            player1 = std::unique_ptr<Models::IPlayer>(new T());
 
             player1.get()->GetMyStones = [this]()->auto{
                 return this->GetStones(StoneColor::BLACK);
@@ -93,7 +93,7 @@ void Board::SetPlayer(const int playerNumber)
             };
             break;
         case 2:
-            player2 = std::unique_ptr<IPlayer>(new T());
+            player2 = std::unique_ptr<Models::IPlayer>(new T());
 
             player2.get()->GetMyStones = [this]()->auto{
                 return this->GetStones(StoneColor::WHITE);

@@ -87,3 +87,26 @@ TEST(PhysicTest, CheckCrash)
                   << "pos: " << black2.position << std::endl << std::endl;
     }
 }
+
+TEST(PhysicTest, Update)
+{
+    Physics physics(0.0f, 0.0f, 0.01f);
+
+    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(0.0f, 0.0f),
+                     Vector2D(0.0f, 0.0f));
+    physics.AddStone(StoneColor::BLACK, 1.0f, 1.0f, Vector2D(1.0f, 2.2f),
+                     Vector2D(0.0f, -1.0f));
+
+	Stone& black1 = physics.stones.at(StoneColor::BLACK).at(0);
+    Stone& black2 = physics.stones.at(StoneColor::BLACK).at(1);
+
+	for (int i = 0; i < 100; i++)
+    {
+        //physics.Update(0.01f);
+        physics.Update(0.001f);
+        std::cout << "black1 vel: " << black1.velocity << "    "
+                  << "pos: " << black1.position << std::endl;
+        std::cout << "black2 vel: " << black2.velocity << "    "
+                  << "pos: " << black2.position << std::endl << std::endl;
+    }
+}

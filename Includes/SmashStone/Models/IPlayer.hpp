@@ -13,7 +13,19 @@ struct Action
 {
     int SelectedStoneIdx;
     Utils::Vector2D<float> velocity;
+
+    Action() : SelectedStoneIdx(0), velocity(Utils::Vector2D<float>(0.0f, 0.0f))
+    {
+        // Do nothing
+    }
+
+    Action(int _SelectedStoneIdx, Utils::Vector2D<float> _velocity)
+        : SelectedStoneIdx(_SelectedStoneIdx), velocity(_velocity)
+    {
+        // Do nothing
+    }
 };
+
 class IPlayer
 {
 public:

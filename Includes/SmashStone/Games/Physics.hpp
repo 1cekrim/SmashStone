@@ -27,9 +27,10 @@ class Physics
 {   
 public:
     Physics() = delete;
-    Physics(const float& friction, const float& elasticity);
+    Physics(const float& friction, const float& elasticity, const float& treatStopVelocity);
 
-    void Update(const float& dt);
+    bool Update(const float& dt);
+    bool CheckAllStop();
     void AffectFriction(const float& dt);
     void UpdatePosition(const float& dt);
     void CheckCrash(void);
@@ -40,7 +41,7 @@ public:
     void DeleteStone(const int& id);
     const int AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
 
-    float friction, elasticity;
+    float friction, elasticity, treatStopVelocity;
     std::vector<Manifold> manifolds;
     std::map<StoneColor, std::vector<Models::Stone>> stones;
 };

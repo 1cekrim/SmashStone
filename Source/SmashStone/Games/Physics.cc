@@ -4,14 +4,14 @@
 
 namespace SmashStone::Games
 {
-Physics::Physics(const float& friction, const float& elasticity)
-    : friction(friction), elasticity(elasticity)
+Physics::Physics(const float& friction, const float& elasticity, const float& treatStopVelocity)
+    : friction(friction), elasticity(elasticity), treatStopVelocity(treatStopVelocity)
 {
     stones.emplace(std::piecewise_construct, std::make_tuple(StoneColor::BLACK), std::make_tuple());
     stones.emplace(std::piecewise_construct, std::make_tuple(StoneColor::WHITE), std::make_tuple());
 }
 
-void Physics::Update(const float& dt)
+bool Physics::Update(const float& dt)
 {
     //change velocity functions
     AffectFriction(dt);
@@ -21,6 +21,38 @@ void Physics::Update(const float& dt)
 
     //check crash functions
     CheckCrash();
+
+    return CheckAllStop();
+}
+
+bool Physics::CheckAllStop(void)
+{
+    std::vector<Models::Stone>& blackStones = stones.at(StoneColor::BLACK);
+    std::vector<Models::Stone>& whiteStones = stones.at(StoneColor::WHITE);
+
+    int num = 0;
+
+    for (Models::Stone& bs : blackStones)
+    {
+        if (bs.velocity.Norm(2) < treatStopVelocity)
+        {
+            bs.velocity.x_ = 0;
+            bs.velocity.y_ = 0;
+            ++num;
+        }
+    }
+
+    for (Models::Stone& ws : whiteStones)
+    {
+        if (ws.velocity.Norm(2) < treatStopVelocity)
+        {
+            ws.velocity.x_ = 0;
+            ws.velocity.y_ = 0;
+            ++num;
+        }
+    }
+
+    return num == (blackStones.size() + whiteStones.size());
 }
 
 void Physics::AffectFriction(const float& dt)

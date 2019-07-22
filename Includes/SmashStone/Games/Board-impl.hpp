@@ -16,9 +16,9 @@ Board::Board() : Board(45.0f, 42.0f)
     // Do nothing
 }
 
-void Board::InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity)
+void Board::InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity, const int& maxStones)
 {
-    physics = std::make_unique<Physics>(friction, elasticity, treatStopVelocity);
+    physics = std::make_unique<Physics>(friction, elasticity, treatStopVelocity, maxStones);
 }
 
 bool Board::PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> positions)

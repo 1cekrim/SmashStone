@@ -16,7 +16,7 @@ public:
     Board();
     Board(const float& height, const float& width);
 
-    void InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity);
+    void InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity, const int& maxStones);
 
     bool PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> positions);
 

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 namespace SmashStone::Games
 {
@@ -23,13 +24,24 @@ struct Manifold
     }
 };
 
+//!
+//! \brief Physics class.
+//!
+//! This class is responsible for the physics inside the game.
+//!
 class Physics
 {   
 public:
     Physics() = delete;
-    Physics(const float& friction, const float& elasticity, const float& treatStopVelocity);
+
+    //! Constructor of Physics.
+    //! \param friction The kinetic friction acceleration of stones.
+    //! \param elasticity The modulus of elasticity of stones.
+    //! \param treatStopVelocity The maximum speed to be treated as zero.
+    Physics(const float& friction, const float& elasticity, const float& treatStopVelocity, const int& maxStones);
 
     bool Update(const float& dt);
+
     bool CheckAllStop();
     void AffectFriction(const float& dt);
     void UpdatePosition(const float& dt);
@@ -45,7 +57,6 @@ public:
     float friction, elasticity, treatStopVelocity;
     int id = 0;
     std::vector<Manifold> manifolds;
-    std::map<StoneColor, std::vector<Models::Stone>> stones;
 };
 }  // namespace SmashStone::Games
 #endif  // SMASHSTONE_GAMES_PHYSICS_HPP

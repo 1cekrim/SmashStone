@@ -32,7 +32,7 @@ class AttackPlayer : public IPlayer
         Action action;
 
         Vector2D dir = (opList.at(0) - myList.at(0)).Normalized();
-        const float speed = 2.0f;
+        const float speed = 20.0f;
 
         return Action(0, dir * speed);
     }
@@ -73,7 +73,7 @@ class DoNothingPlayer : public IPlayer
 TEST(TESTPLAY, TEST1)
 {
     Board board;
-    board.InitBoard(1.0f, 1.0f, 0.0001f);
+    board.InitBoard(1.0f, 1.0f, 0.0001f, 100);
 
     board.SetPlayer<AttackPlayer>(1);
     board.SetPlayer<DoNothingPlayer>(2);
@@ -98,5 +98,5 @@ TEST(TESTPLAY, TEST1)
         now = (now == 1) ? 2 : 1;
     }
 
-    EXPECT_EQ(board.GetStones(StoneColor::WHITE).size(), 0);
+    EXPECT_TRUE((board.GetStones(StoneColor::WHITE).size() == 0 || board.GetStones(StoneColor::BLACK).size() == 0));
 }

@@ -35,13 +35,15 @@ public:
     void UpdatePosition(const float& dt);
     void CheckCrash(void);
     const bool UpdateManifold(Manifold& manifold) const;
+    void PositionCorrection(Manifold& manifold);
 
-    void DoCrash(Manifold& manifold) const;
+    void DoCrash(Manifold& manifold);
 
     void DeleteStone(const int& id);
     const int AddStone(StoneColor color, float mass, float radius, Utils::Vector2D<float> position, Utils::Vector2D<float> velocity);
 
     float friction, elasticity, treatStopVelocity;
+    int id = 0;
     std::vector<Manifold> manifolds;
     std::map<StoneColor, std::vector<Models::Stone>> stones;
 };

@@ -127,6 +127,10 @@ template<class T>
 Vector2D<T> Vector2D<T>::Normalized(void) const
 {
     const float d = Norm(2);
+    if (d == 0)
+    {
+        return Vector2D<T>(1.0f, 0.0f);
+    }
     return Vector2D<T>(this->x_ / d, this->y_ / d);
 }
 }  // namespace SmashStone::Utils

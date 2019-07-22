@@ -23,15 +23,15 @@ public:
 
     bool CanPutHere(Utils::Vector2D<float> pos);
 
-    std::vector<Models::Stone> GetStones(StoneColor color) const;
+    std::vector<Utils::Vector2D<float>> GetStones(StoneColor color) const;
     template<class T>
-    void SetPlayer(const int& playerNumber);
+    void SetPlayer(const int playerNumber);
 
-    void PlayerReady(const int& playerNumber);
-    void PlayerDoAction(const int& playerNumber);
-    void DoActionAndWait(const int& playerNumber, Models::Action action);
+    void PlayerReady(const int playerNumber);
+    void PlayerDoAction(const int playerNumber);
+    bool ProcessPhysics(const float dt);
     void DestroyOutBoundStone(void);
-    bool CheckGameEnd(void);
+    bool CheckGameEnd(const int playerNumber);
     
     const float height, width;
     std::unique_ptr<Physics> physics;

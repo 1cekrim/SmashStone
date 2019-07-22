@@ -79,15 +79,33 @@ void Board::SetPlayer(const int playerNumber)
     {
         case 1:
             player1 = std::unique_ptr<IPlayer>(new T());
-            player1.get()->GetMyStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::BLACK);
-            player1.get()->GetOpStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::WHITE);
-            player1.get()->PutStones = std::bind(&Board::PutStones, std::ref(*this), StoneColor::BLACK, std::placeholders::_1);
+
+            player1.get()->GetMyStones = [this]()->auto{
+                return this->GetStones(StoneColor::BLACK);
+            };
+
+            player1.get()->GetOpStones = [this]()->auto{
+                return this->GetStones(StoneColor::WHITE);
+            };
+
+            player1.get()->PutStones = [this](auto i)->auto{
+                return this->PutStones(StoneColor::BLACK, i);
+            };
             break;
         case 2:
             player2 = std::unique_ptr<IPlayer>(new T());
-            player2.get()->GetMyStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::WHITE);
-            player2.get()->GetOpStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::BLACK);
-            player2.get()->PutStones = std::bind(&Board::PutStones, std::ref(*this), StoneColor::WHITE, std::placeholders::_1);
+
+            player2.get()->GetMyStones = [this]()->auto{
+                return this->GetStones(StoneColor::WHITE);
+            };
+
+            player2.get()->GetOpStones = [this]()->auto{
+                return this->GetStones(StoneColor::BLACK);
+            };
+
+            player2.get()->PutStones = [this](auto i)->auto{
+                return this->PutStones(StoneColor::WHITE, i);
+            };
             break;
         default:
             break;

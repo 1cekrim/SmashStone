@@ -1,5 +1,5 @@
-#ifndef SMASHSTONE_GAMES_BOARDS_HPP
-#define SMASHSTONE_GAMES_BOARDS_HPP
+#ifndef SMASHSTONE_GAMES_BOARD_HPP
+#define SMASHSTONE_GAMES_BOARD_HPP
 
 #include <SmashStone/Enums/StoneEnums.hpp>
 #include <SmashStone/Utils/Vector2D.hpp>
@@ -15,9 +15,8 @@ class Board
 public:
     Board();
     Board(const float& height, const float& width);
-    ~Board();
 
-    void InitBoard(const float& friction, const float& elasticity);
+    void InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity);
 
     bool PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> positions);
 
@@ -39,4 +38,6 @@ public:
     std::unique_ptr<Models::IPlayer> player2;
 };
 }  // namespace SmashStone::Games
-#endif  // SMASHSTONE_GAMES_BOARDS_HPP
+
+#include <SmashStone/Games/Board-impl.hpp>
+#endif  // SMASHSTONE_GAMES_BOARD_HPP

@@ -1,4 +1,6 @@
-#include <SmashStone/Games/Board.hpp>
+#ifndef SMASHSTONE_GAMES_BOARD_IMPL_HPP
+#define SMASHSTONE_GAMES_BOARD_IMPL_HPP
+
 #include <SmashStone/Enums/GameEnums.hpp>
 #include <memory>
 #include <iostream>
@@ -14,9 +16,9 @@ Board::Board() : Board(0.45f, 0.42f)
     // Do nothing
 }
 
-void Board::InitBoard(const float& friction, const float& elasticity)
+void Board::InitBoard(const float& friction, const float& elasticity, const float& treatStopVelocity)
 {
-    physics = std::make_unique<Physics>(friction, elasticity);
+    physics = std::make_unique<Physics>(friction, elasticity, treatStopVelocity);
 }
 
 bool Board::PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> positions)
@@ -63,7 +65,6 @@ bool Board::CanPutHere(Utils::Vector2D<float> pos)
 
     return true;
 }
-
 std::function<bool (std::vector<Utils::Vector2D<float>>)> PutStones;
 template<class T>
 void Board::SetPlayer(const int playerNumber)
@@ -71,16 +72,16 @@ void Board::SetPlayer(const int playerNumber)
     switch (playerNumber)
     {
         case 1:
-            player1 = std::make_unique<T>();
-            player1.get()->GetMyStones = std::bind(GetStones, StoneColor::BLACK);
-            player1.get()->GetOpStones = std::bind(GetStones, StoneColor::WHITE);
-            player1.get()->PutStones = std::bind(PutStones, StoneColor::BLACK, std::placeholders::_1);
+            player1 = std::unique_ptr<IPlayer>(new T());
+            player1.get()->GetMyStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::BLACK);
+            player1.get()->GetOpStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::WHITE);
+            player1.get()->PutStones = std::bind(&Board::PutStones, std::ref(*this), StoneColor::BLACK, std::placeholders::_1);
             break;
         case 2:
-            player2 = std::make_unique<T>();
-            player2.get()->GetMyStones = std::bind(GetStones, StoneColor::WHITE);
-            player2.get()->GetOpStones = std::bind(GetStones, StoneColor::BLACK);
-            player2.get()->PutStones = std::bind(PutStones, StoneColor::WHITE, std::placeholders::_1);
+            player2 = std::unique_ptr<IPlayer>(new T());
+            player2.get()->GetMyStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::WHITE);
+            player2.get()->GetOpStones = std::bind(&Board::GetStones, std::ref(*this), StoneColor::BLACK);
+            player2.get()->PutStones = std::bind(&Board::PutStones, std::ref(*this), StoneColor::WHITE, std::placeholders::_1);
             break;
         default:
             break;
@@ -107,13 +108,17 @@ void Board::PlayerDoAction(const int playerNumber)
     switch (playerNumber)
     {
     case 1:
+    {
         auto action = player1.get()->GetAction();
         physics.get()->stones.at(StoneColor::BLACK).at(action.SelectedStoneIdx).velocity = action.velocity;
         break;
+    }
     case 2:
+    {
         auto action = player2.get()->GetAction();
         physics.get()->stones.at(StoneColor::WHITE).at(action.SelectedStoneIdx).velocity = action.velocity;
         break;
+    }
     default:
         break;
     }
@@ -131,8 +136,8 @@ void Board::DestroyOutBoundStone(void)
 
     for (auto stone = blackStones.begin(); stone != blackStones.end(); ++stone)
     {
-        const int x = stone->velocity.x_;
-        const int y = stone->velocity.y_;
+        const float x = stone->velocity.x_;
+        const float y = stone->velocity.y_;
 
         if (x < 0 || y < 0 || x > width || y > height)
         {
@@ -142,8 +147,8 @@ void Board::DestroyOutBoundStone(void)
 
     for (auto stone = whiteStones.begin(); stone != whiteStones.end(); ++stone)
     {
-        const int x = stone->velocity.x_;
-        const int y = stone->velocity.y_;
+        const float x = stone->velocity.x_;
+        const float y = stone->velocity.y_;
 
         if (x < 0 || y < 0 || x > width || y > height)
         {
@@ -200,3 +205,4 @@ std::vector<Utils::Vector2D<float>> Board::GetStones(StoneColor color) const
     return stones;
 }
 }
+#endif  // SMASHSTONE_GAMES_BOARD_IMPL_HPP

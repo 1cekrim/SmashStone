@@ -3,7 +3,7 @@
 
 #include <SmashStone/Enums/GameEnums.hpp>
 #include <memory>
-#include <iostream>
+
 namespace SmashStone::Games
 {
 Board::Board(const float& height, const float& width) : height(height), width(width)
@@ -162,8 +162,8 @@ void Board::DestroyOutBoundStone(void)
 
         if (x < 0 || y < 0 || x > width || y > height)
         {
-            stone = blackStones.erase(stone);
             (*stone)->isDestroyed = true;
+            stone = blackStones.erase(stone);
         }
         else
         {
@@ -178,8 +178,8 @@ void Board::DestroyOutBoundStone(void)
         
         if (x < 0 || y < 0 || x > width || y > height)
         {
-            stone = whiteStones.erase(stone);
             (*stone)->isDestroyed = true;
+            stone = whiteStones.erase(stone);
         }
         else
         {

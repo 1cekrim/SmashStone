@@ -9,6 +9,7 @@ Physics::Physics(const float& friction, const float& elasticity, const float& tr
 {
     stones.emplace(std::piecewise_construct, std::make_tuple(StoneColor::BLACK), std::make_tuple());
     stones.emplace(std::piecewise_construct, std::make_tuple(StoneColor::WHITE), std::make_tuple());
+    
     stones.at(StoneColor::BLACK).reserve(maxStones);
     stones.at(StoneColor::WHITE).reserve(maxStones);
 }
@@ -89,7 +90,6 @@ void Physics::AffectFriction(const float& dt)
             {
                 ws->velocity = Utils::Vector2D<float>(0.0f, 0.0f);
             }
-            
         }
     }
 }
@@ -146,7 +146,7 @@ void Physics::CheckCrash(void)
     for (Manifold& manifold : manifolds)
     {
         if (UpdateManifold(manifold))
-        {
+        {   
             DoCrash(manifold);
         }
     }
@@ -164,7 +164,7 @@ const bool Physics::UpdateManifold(Manifold& manifold) const
 {
     if (manifold.source->isDestroyed || manifold.target->isDestroyed)
     {
-        return false;
+         return false;
     }
 
     auto& source = manifold.source;
@@ -174,6 +174,7 @@ const bool Physics::UpdateManifold(Manifold& manifold) const
 
     const float d = dir.Norm(2);
     const float r = source->radius + target->radius;
+
     if (r < d)
     {
         return false;

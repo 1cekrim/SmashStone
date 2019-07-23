@@ -1,0 +1,7 @@
+#ifndef SMASHSTONEGUI_CONSTANTS_HPP
+#define SMASHSTONEGUI_CONSTANTS_HPP
+
+constexpr int WIDTH = 800, HEIGHT = 800;
+constexpr float RESCALE_FACTOR = WIDTH / 1700.787402f;
+
+#endif

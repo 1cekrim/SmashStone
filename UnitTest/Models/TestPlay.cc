@@ -17,10 +17,46 @@ class AttackPlayer : public IPlayer
         do
         {
             stones.clear();
-            stones.reserve(2);
-            for (int i = 1; i <= 2; i++)
+            stones.reserve(8);
+            for (int i = 1; i <= 8; i++)
             {
-                stones.emplace_back(5.0f, Random::get<float>(0.0f, 45.0f));
+                stones.emplace_back(Random::get<float>(2.0f, 20.0f), Random::get<float>(0.0f, 45.0f));
+            }
+        } while (!PutStones(stones));
+    }
+
+    Action GetAction(void)
+    {
+        std::vector<Vector2D<float>> myList = GetMyStones();
+        std::vector<Vector2D<float>> opList = GetOpStones();
+        Action action;
+        
+        const int selected = Random::get<int>(0, myList.size() - 1);
+        Vector2D dir = (opList.at(Random::get<int>(0, opList.size() - 1)) - myList.at(selected)).Normalized();
+        
+        const float speed = Random::get<float>(50.0f, 70.0f);
+
+        return Action(selected, dir * speed);
+    }
+
+    void TurnEnd(bool isMyTurn, TurnResult result)
+    {
+
+    }
+};
+
+class AttackPlayer2 : public IPlayer
+{
+    void Ready(void)
+    {
+        std::vector<Vector2D<float>> stones;
+        do
+        {
+            stones.clear();
+            stones.reserve(8);
+            for (int i = 1; i <= 8; i++)
+            {
+                stones.emplace_back(Random::get<float>(20.0f, 40.0f), Random::get<float>(0.0f, 45.0f));
             }
         } while (!PutStones(stones));
     }
@@ -31,10 +67,12 @@ class AttackPlayer : public IPlayer
         std::vector<Vector2D<float>> opList = GetOpStones();
         Action action;
 
-        Vector2D dir = (opList.at(0) - myList.at(0)).Normalized();
-        const float speed = 20.0f;
+        const int selected = Random::get<int>(0, myList.size() - 1);
+        Vector2D dir = (opList.at(Random::get<int>(0, opList.size() - 1)) - myList.at(selected)).Normalized();
 
-        return Action(0, dir * speed);
+        const float speed = Random::get<float>(30.0f, 50.0f);
+
+        return Action(selected, dir * speed);
     }
 
     void TurnEnd(bool isMyTurn, TurnResult result)
@@ -51,8 +89,8 @@ class DoNothingPlayer : public IPlayer
         do
         {
             stones.clear();
-            stones.reserve(2);
-            for (int i = 1; i <= 2; i++)
+            stones.reserve(8);
+            for (int i = 1; i <= 8; i++)
             {
                 stones.emplace_back(40.0f, Random::get<float>(0.0f, 45.0f));
             }
@@ -70,40 +108,16 @@ class DoNothingPlayer : public IPlayer
     }
 };
 
-TEST(TESTPLAY, TEST1)
+TEST(TESTPLAY, GUI_OFF)
 {
-    Board board;
-    board.InitBoard(1.0f, 1.0f, 0.0001f, 100);
-
-    board.SetPlayer<AttackPlayer>(1);
-    board.SetPlayer<DoNothingPlayer>(2);
-
-    board.PlayerReady(1);
-
-    board.PlayerReady(2);
-
-    bool isEnd = false;
-    int now = 1;
-
-    while (!isEnd)
-    {
-        board.PlayerDoAction(now);
-
-        while (!board.ProcessPhysics(0.0001f));
-
-        board.DestroyOutBoundStone();
-
-        isEnd = board.CheckGameEnd(now);
-
-        now = (now == 1) ? 2 : 1;
-    }
-
-    EXPECT_TRUE((board.GetStones(StoneColor::WHITE).size() == 0 || board.GetStones(StoneColor::BLACK).size() == 0));
+    Game game(45.f, 42.f, 15.f, 0.5f, 0.0001f, 100);
+    game.useGui = false;
+    game.PlayGame<AttackPlayer, AttackPlayer2>();
 }
 
-TEST(TESTPLAY, TEST2)
+TEST(TESTPLAY, GUI_ON)
 {
-    Game game(45.f, 42.f, 1.f, 1.f, 0.0001f, 100);
-
-    game.PlayGame<AttackPlayer, DoNothingPlayer>();
+    Game game(45.f, 42.f, 15.f, 0.5f, 0.0001f, 100);
+    game.useGui = true;
+    game.PlayGame<AttackPlayer, AttackPlayer2>();
 }

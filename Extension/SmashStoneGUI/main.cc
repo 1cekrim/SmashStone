@@ -15,6 +15,8 @@ class AttackPlayer : public IPlayer
 {
     void Ready(void)
     {
+        std::cout << "I'm Ready! My color is "
+                  << (color == StoneColor::BLACK ? "BLACK" : "WHITE") << std::endl;
         std::vector<Vector2D<float>> stones;
         do
         {
@@ -79,7 +81,7 @@ class AttackPlayer : public IPlayer
 
 int main(void)
 {
-    Game game(45.f, 42.f, 35.f, 0.5f, 0.0001f, 100);
+    Game game(45.f, 45.f, 35.f, 0.5f, 0.0001f, 100);
     game.useGui = true;
     game.PlayGame<AttackPlayer, AttackPlayer>();
     return 0;

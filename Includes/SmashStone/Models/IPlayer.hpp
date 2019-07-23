@@ -35,6 +35,7 @@ public:
     std::function<bool (std::vector<Utils::Vector2D<float>>)> PutStones;
     std::function<std::vector<Utils::Vector2D<float>> ()> GetMyStones;
     std::function<std::vector<Utils::Vector2D<float>> ()> GetOpStones;
+    StoneColor color;
 };
 }  // namespace SmashStone::Models
 #endif  // SMASHSTONE_MODELS_IPLAYER_HPP

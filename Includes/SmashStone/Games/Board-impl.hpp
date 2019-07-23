@@ -3,6 +3,7 @@
 
 #include <SmashStone/Enums/GameEnums.hpp>
 #include <memory>
+#include <iostream>
 
 namespace SmashStone::Games
 {
@@ -11,7 +12,7 @@ Board::Board(const float& height, const float& width) : height(height), width(wi
     // Do nothing
 }
 
-Board::Board() : Board(45.0f, 42.0f)
+Board::Board() : Board(45.0f, 45.0f)
 {
     // Do nothing
 }
@@ -76,7 +77,7 @@ void Board::SetPlayer(const int playerNumber)
     {
         case 1:
             player1 = std::unique_ptr<Models::IPlayer>(new T());
-
+            player1.get()->color = StoneColor::BLACK;
             player1.get()->GetMyStones = [this]()->auto{
                 return this->GetStones(StoneColor::BLACK);
             };
@@ -91,7 +92,7 @@ void Board::SetPlayer(const int playerNumber)
             break;
         case 2:
             player2 = std::unique_ptr<Models::IPlayer>(new T());
-
+            player2.get()->color = StoneColor::WHITE;
             player2.get()->GetMyStones = [this]()->auto{
                 return this->GetStones(StoneColor::WHITE);
             };

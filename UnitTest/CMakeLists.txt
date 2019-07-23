@@ -8,4 +8,9 @@ add_executable(${target} ${sources})
 target_link_libraries(${target}
 	SmashStone
 	gtest
+	effolkronium_random
+	sfml-graphics
+	sfml-main
+	sfml-system
+	sfml-window
 )

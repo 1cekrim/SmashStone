@@ -20,6 +20,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(Libraries/googletest)
 add_subdirectory(Libraries/random)
 
+add_subdirectory(Libraries/SFML)
+include_directories(Libraries/SFML/include)
+
 # Includes
 include_directories(Includes)
 include_directories(Libraries/random/include)
@@ -27,3 +30,5 @@ include_directories(Libraries/random/include)
 # Project modules
 add_subdirectory(Source/SmashStone)
 add_subdirectory(UnitTest)
+
+add_subdirectory(Extension/SmashStoneGUI)

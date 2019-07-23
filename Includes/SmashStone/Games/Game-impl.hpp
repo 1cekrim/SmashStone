@@ -26,14 +26,10 @@ void MoveStone(sf::CircleShape& circle, Utils::Vector2D<float>& position)
 template <class T, class U>
 void Game::PlayGame(void)
 {
-    
-
     board.InitBoard(friction, elasticity, treatStopVelocity, maxStones);
 
     board.SetPlayer<T>(1);
     board.SetPlayer<U>(2);
-
-    
 
     if (useGui)
     {

@@ -89,7 +89,7 @@ TEST(TESTPLAY, TEST1)
     {
         board.PlayerDoAction(now);
 
-        while (!board.ProcessPhysics(0.01f));
+        while (!board.ProcessPhysics(0.0001f));
 
         board.DestroyOutBoundStone();
 
@@ -99,4 +99,11 @@ TEST(TESTPLAY, TEST1)
     }
 
     EXPECT_TRUE((board.GetStones(StoneColor::WHITE).size() == 0 || board.GetStones(StoneColor::BLACK).size() == 0));
+}
+
+TEST(TESTPLAY, TEST2)
+{
+    Game game(45.f, 42.f, 1.f, 1.f, 0.0001f, 100);
+
+    game.PlayGame<AttackPlayer, DoNothingPlayer>();
 }

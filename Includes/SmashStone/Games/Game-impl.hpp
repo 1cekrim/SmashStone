@@ -20,7 +20,7 @@ Game::Game(const float& height, const float& width, const float& friction, const
 void MoveStone(sf::CircleShape& circle, Utils::Vector2D<float>& position)
 {
     static const float CM2PX = 37.795276f * RESCALE_FACTOR;
-    circle.setPosition(position.x_ * CM2PX, position.y_ * CM2PX);
+    circle.setPosition((position.x_ + 1.1f) * CM2PX, (position.y_ - 1.1f) * CM2PX);
 }
 
 template <class T, class U>

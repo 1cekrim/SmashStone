@@ -4,9 +4,6 @@
 [submodule "Libraries/random"]
 	path = Libraries/random
 	url = https://github.com/effolkronium/random.git
-[submodule "Libraries/glog"]
-	path = Libraries/glog
-	url = https://github.com/google/glog.git
 [submodule "Libraries/SFML"]
 	path = Libraries/SFML
 	url = https://github.com/SFML/SFML

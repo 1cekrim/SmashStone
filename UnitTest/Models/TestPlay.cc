@@ -73,7 +73,7 @@ class DoNothingPlayer : public IPlayer
 TEST(TESTPLAY, TEST1)
 {
     Board board;
-    board.InitBoard(1.0f, 1.0f, 0.0001f);
+    //board.InitBoard(1.0f, 1.0f, 0.0001f);
 
     board.SetPlayer<AttackPlayer>(1);
     board.SetPlayer<DoNothingPlayer>(2);

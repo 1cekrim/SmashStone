@@ -23,8 +23,6 @@ void Board::InitBoard(const float& friction, const float& elasticity, const floa
 
 bool Board::PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> positions)
 {
-    std::cout << "putstones start" << std::endl;
-
     for (auto pos : positions)
     {
         if (!CanPutHere(pos))
@@ -34,7 +32,6 @@ bool Board::PutStones(StoneColor color, std::vector<Utils::Vector2D<float>> posi
     }
     for (auto pos : positions)
     {
-        std::cout << pos << std::endl; 
         physics.get()->AddStone(color, 0.041f, 1.1f, pos, Utils::Vector2D<float>(0, 0));
     }
     return true;
@@ -135,14 +132,12 @@ void Board::PlayerDoAction(const int playerNumber)
     {
         auto action = player1.get()->GetAction();
         physics.get()->stones.at(StoneColor::BLACK).at(action.SelectedStoneIdx)->velocity = action.velocity;
-        std::cout << "player1 action: " << action.SelectedStoneIdx << " change speed " << action.velocity << std::endl;
         break;
     }
     case 2:
     {
         auto action = player2.get()->GetAction();
         physics.get()->stones.at(StoneColor::WHITE).at(action.SelectedStoneIdx)->velocity = action.velocity;
-        std::cout << "player2 action: " << action.SelectedStoneIdx << " change speed " << action.velocity << std::endl;
         break;
     }
     default:
@@ -152,7 +147,6 @@ void Board::PlayerDoAction(const int playerNumber)
 
 bool Board::ProcessPhysics(const float dt)
 {
-    //std::cout << "dist: " << (physics.get()->stones.at(StoneColor::BLACK).at(0).position - physics.get()->stones.at(StoneColor::WHITE).at(0).position).Norm(2) << std::endl;
     return physics.get()->Update(dt);
 }
 

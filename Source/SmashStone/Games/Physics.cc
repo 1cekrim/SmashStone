@@ -1,7 +1,7 @@
 #include <SmashStone/Enums/StoneEnums.hpp>
 #include <SmashStone/Games/Physics.hpp>
 #include <SmashStone/Models/Stone.hpp>
-#include <iostream>
+
 namespace SmashStone::Games
 {
 Physics::Physics(const float& friction, const float& elasticity, const float& treatStopVelocity, const int& maxStones)
@@ -53,14 +53,7 @@ bool Physics::CheckAllStop(void)
             ++num;
         }
     }
-    if (num == (blackStones.size() + whiteStones.size()))
-    {
-        std::cout << "all stop" << std::endl;
-        for (Manifold& mani : manifolds)
-        {
-            std::cout << "mani: " <<  mani.source->velocity << mani.target->velocity << std::endl;
-        }
-    }
+
     return num == (blackStones.size() + whiteStones.size());
 }
 
@@ -161,16 +154,6 @@ void Physics::CheckCrash(void)
 
 void Physics::PositionCorrection(Manifold& manifold)
 {
-    // const float percent = 0.2;
-    // const float slop = 0.001;
-    // const float c = (manifold.penetration > slop) ? (manifold.penetration - slop) : 0.0f;
-    // std::cout << "Noncorrection: " << (manifold.source.position - manifold.target.position).Norm(2) << std::endl;
-    // Utils::Vector2D<float> correction = c / (manifold.source.invMass + manifold.target.invMass) * percent * manifold.normal;
-
-    // manifold.source.position -= manifold.source.invMass * correction;
-    // manifold.target.position += manifold.target.invMass * correction;
-
-    // std::cout << "correction: " << (manifold.source.position - manifold.target.position).Norm(2) << std::endl;
     Utils::Vector2D<float> midpoint = (manifold.target->position + manifold.source->position) / 2;
 
     manifold.source->position = midpoint - manifold.normal * manifold.source->radius;
@@ -220,17 +203,13 @@ void Physics::DoCrash(Manifold& manifold)
     {
         return;
     }
-    std::cout << "crash, d: " << (manifold.source->position - manifold.target->position).Norm(2) << std::endl;
+
     const float j = -1 * (1 + elasticity) * vn / (manifold.source->invMass + manifold.target->invMass);
     
     const Utils::Vector2D<float> impulse = j * manifold.normal;
 
-    std::cout << "bef source velo: " << manifold.source->velocity << "target velo: " << manifold.target->velocity << std::endl;
-
     manifold.source->velocity -= manifold.source->invMass * impulse;
     manifold.target->velocity += manifold.target->invMass * impulse;
-
-    std::cout << "aft source velo: " << manifold.source->velocity << "target velo: " << manifold.target->velocity << std::endl;
     
     PositionCorrection((manifold));
 }

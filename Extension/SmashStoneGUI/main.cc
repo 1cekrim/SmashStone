@@ -1,45 +1,86 @@
+#include <SFML/Graphics.hpp>
+#include <SmashStone/SmashStone.hpp>
+#include <effolkronium/random.hpp>
+#include <iostream>
 #include "Constsants.hpp"
 
-#include <SFML/Graphics.hpp>
+using namespace SmashStone;
+using namespace Utils;
+using namespace Models;
+using namespace Games;
 
-int main()
+using Random = effolkronium::random_static;
+
+class AttackPlayer : public IPlayer
 {
-    sf::RenderWindow window(sf::VideoMode(WIDTH, WIDTH), "SmashStoneGUI", sf::Style::Titlebar | sf::Style::Close);
-
-    // Board
-    sf::Texture board_Tex;
-    if (!board_Tex.loadFromFile("Resource/board.png"))
+    void Ready(void)
     {
-        return -1;
+        std::vector<Vector2D<float>> stones;
+        do
+        {
+            stones.clear();
+            stones.reserve(8);
+            for (int i = 1; i <= 8; i++)
+            {
+                stones.emplace_back(Random::get<float>(0.0f, 42.0f),
+                                    Random::get<float>(0.0f, 45.0f));
+            }
+        } while (!PutStones(stones));
     }
 
-    sf::Sprite board_Sprite;
-    board_Sprite.setTexture(board_Tex);
-    auto rect = board_Sprite.getTextureRect();
-    board_Sprite.scale(sf::Vector2f(
-		static_cast<float>(WIDTH) / rect.width,
-		static_cast<float>(HEIGHT) / rect.height
-	));
-
-	sf::CircleShape circle(41.574803f * RESCALE_FACTOR);
-    circle.setFillColor(sf::Color::Black);
-
-    while (window.isOpen())
+    Action GetAction(void)
     {
-        sf::Event event;
-        while (window.pollEvent(event))
+        Action action;
+
+        std::vector<Vector2D<float>> myList = GetMyStones();
+        std::vector<Vector2D<float>> opList = GetOpStones();
+
+        const int selected = Random::get<int>(0, myList.size() - 1);
+
+        Vector2D dir = (opList.at(Random::get<int>(0, opList.size() - 1)) -
+                        myList.at(selected))
+                           .Normalized();
+
+        const float speed = Random::get<float>(50.0f, 70.0f);
+
+        return Action(selected, dir * speed);
+    }
+
+    void TurnEnd(bool isMyTurn, TurnResult result)
+    {
+        if (result == TurnResult::WIN)
         {
-            if (event.type == sf::Event::Closed)
+            if (isMyTurn)
             {
-                window.close();
+                std::cout << "Win! I'm smart!" << std::endl;
+            }
+            else
+            {
+                std::cout << "Win! You're stupid!" << std::endl;
+			}
+        }
+        else if (result == TurnResult::LOSE)
+        {
+            if (isMyTurn)
+            {
+                std::cout << "Lose... I'm stupid..." << std::endl;
+            }
+            else
+            {
+                std::cout << "Lose... You're smart..." << std::endl;
             }
         }
-
-        window.clear();
-        window.draw(board_Sprite);
-        window.draw(circle);
-        window.display();
+        else if (result == TurnResult::DRAW)
+        {
+            std::cout << "Draw..?" << std::endl;
+        }
     }
+};
 
+int main(void)
+{
+    Game game(45.f, 42.f, 35.f, 0.5f, 0.0001f, 100);
+    game.useGui = true;
+    game.PlayGame<AttackPlayer, AttackPlayer>();
     return 0;
 }
